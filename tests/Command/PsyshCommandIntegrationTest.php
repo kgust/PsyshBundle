@@ -15,6 +15,9 @@ use Psy\Shell;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
+use Symfony\Component\HttpKernel\Kernel;
+use function array_keys;
+use function version_compare;
 
 /**
  * @author Théo FIDRY <theo.fidry@gmail.com>
@@ -23,22 +26,16 @@ use Symfony\Bundle\FrameworkBundle\Test\TestContainer;
  */
 class PsyshCommandIntegrationTest extends KernelTestCase
 {
-    /**
-     * @var Shell
-     */
-    private $shell;
+    private Shell $shell;
 
-    /**
-     * @var PsyshCommand
-     */
-    private $command;
+    private PsyshCommand $command;
 
     protected function setUp(): void
     {
         self::bootKernel();
 
-        $this->shell = self::$container->get('psysh.shell');
-        $this->command = self::$container->get('psysh.command.shell_command');
+        $this->shell = static::getContainer()->get('psysh.shell');
+        $this->command = static::getContainer()->get('psysh.command.shell_command');
     }
 
     public function testScopeVariables(): void
